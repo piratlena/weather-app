@@ -34,6 +34,23 @@
 <script setup>
 import { ref } from "vue";
 import axios from "axios";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+
+const previewCity = (searchResult) => {
+  console.log(searchResult);
+  const [city, state] = searchResult.place_name.split(",");
+  router.push({
+    name: "cityView",
+    params: { state: state.replaceAll(" ", ""), city: city },
+    query: {
+      lat: searchResult.geometry.coordinates[1],
+      lng: searchResult.geometry.coordinates[0],
+      preview: true,
+    },
+  });
+};
 const mapboxAPIKey =
   "pk.eyJ1IjoicGlyYXRsZW5hIiwiYSI6ImNsZ3Z5bWtlMzA2bGozZHFwYXRva2h1azQifQ.tBQS6SsU560sJBpI6FKGvA";
 const searchQuery = ref("");
